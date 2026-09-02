@@ -1,0 +1,16 @@
+vulnerable-web-lab/.env
+
+.bash_history
+.zsh_history
+
+.ssh/
+
+.docker/
+
+*.swp
+*.swo
+
+*.log
+*.tmp
+
+.DS_Store

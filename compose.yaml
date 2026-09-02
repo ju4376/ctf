@@ -1,0 +1,174 @@
+services:
+  db-public:
+    image: mariadb:11.4.13
+    container_name: lab-db-public
+    restart: unless-stopped
+
+    environment:
+      MARIADB_ROOT_PASSWORD: ${PUBLIC_DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${PUBLIC_DB_NAME}
+      MARIADB_USER: ${PUBLIC_DB_USER}
+      MARIADB_PASSWORD: ${PUBLIC_DB_PASSWORD}
+
+    volumes:
+      - public_db_data:/var/lib/mysql
+      - ./db-public/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+
+    networks:
+      - public_db_net
+
+    healthcheck:
+      test:
+        - CMD
+        - healthcheck.sh
+        - --connect
+        - --innodb_initialized
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+
+  db-admin:
+    image: mariadb:11.4.13
+    container_name: lab-db-admin
+    restart: unless-stopped
+
+    environment:
+      MARIADB_ROOT_PASSWORD: ${ADMIN_DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${ADMIN_DB_NAME}
+      MARIADB_USER: ${ADMIN_DB_USER}
+      MARIADB_PASSWORD: ${ADMIN_DB_PASSWORD}
+
+    volumes:
+      - admin_db_data:/var/lib/mysql
+      - ./db-admin/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+
+    networks:
+      - admin_db_net
+
+    healthcheck:
+      test:
+        - CMD
+        - healthcheck.sh
+        - --connect
+        - --innodb_initialized
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  public-web:
+    build:
+      context: ./public-web
+
+    container_name: lab-public-web
+    restart: unless-stopped
+
+    environment:
+      DB_HOST: db-public
+      DB_NAME: ${PUBLIC_DB_NAME}
+      DB_USER: ${PUBLIC_DB_USER}
+      DB_PASSWORD: ${PUBLIC_DB_PASSWORD}
+
+    depends_on:
+      db-public:
+        condition: service_healthy
+
+    networks:
+      - frontend_net
+      - public_db_net
+
+    volumes:
+      - ./public-web/src:/var/www/html:ro,Z
+
+  admin-web:
+    build:
+      context: ./admin-web
+
+    container_name: lab-admin-web
+    restart: unless-stopped
+
+    environment:
+      DB_HOST: db-admin
+      DB_NAME: ${ADMIN_DB_NAME}
+      DB_USER: ${ADMIN_DB_USER}
+      DB_PASSWORD: ${ADMIN_DB_PASSWORD}
+
+    depends_on:
+      db-admin:
+        condition: service_healthy
+
+    networks:
+      - admin_db_net
+      - admin_waf_net
+
+    volumes:
+      - ./admin-web/src:/var/www/html:ro,Z
+
+  admin-waf:
+    image: owasp/modsecurity-crs:4.25.1-apache-lts
+    container_name: lab-admin-waf
+    restart: unless-stopped
+
+    environment:
+      BACKEND: http://admin-web:80
+
+      PORT: 8080
+
+      MODSEC_RULE_ENGINE: "On"
+
+      BLOCKING_PARANOIA: "1"
+      DETECTION_PARANOIA: "1"
+
+      ANOMALY_INBOUND: "5"
+      ANOMALY_OUTBOUND: "4"
+
+      MODSEC_AUDIT_ENGINE: "RelevantOnly"
+      MODSEC_AUDIT_LOG: /dev/stdout
+
+      SERVER_NAME: localhost
+
+    depends_on:
+      - admin-web
+
+    networks:
+      - admin_waf_net
+
+  proxy:
+    build:
+      context: ./proxy
+
+    container_name: lab-proxy
+    restart: unless-stopped
+
+    depends_on:
+      - public-web
+      - admin-waf
+
+    networks:
+      - frontend_net
+      - admin_waf_net
+
+    ports:
+      - "80:80"
+
+volumes:
+  public_db_data:
+  admin_db_data:
+
+
+networks:
+  frontend_net:
+    driver: bridge
+
+  public_db_net:
+    driver: bridge
+    internal: true
+
+  admin_db_net:
+    driver: bridge
+    internal: true
+
+  admin_waf_net:
+    driver: bridge
