@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Administrator Login</title>
+    <title>관리자 로그인</title>
 
     <style>
         body {
@@ -98,9 +98,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
 
-<h1>Administrator Login</h1>
+<h1>관리자 페이지</h1>
 
-<p>Authorized administrators only.</p>
+<p>관리자 로그인</p>
 
 <?php if ($error !== ''): ?>
 

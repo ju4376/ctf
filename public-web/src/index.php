@@ -79,7 +79,6 @@ try {
 
 <title>인프라보안 11기 야호</title>
 <?php if ($page === 'login'): ?>
-
         <link
             rel="stylesheet"
             href="/login/login.css"
@@ -111,8 +110,7 @@ try {
         require __DIR__ . '/login/login.html';
         ?>
 
-    <?php elseif ($page === 'admin'): ?>
-
+<?php elseif ($page === 'admin'): ?>
         <?php
         require __DIR__ . '/admin-page/admin.html';
         ?>
