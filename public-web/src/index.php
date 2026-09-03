@@ -89,7 +89,7 @@ try {
 
         <link
             rel="stylesheet"
-            href="/admin/admin.css"
+            href="/admin-page/admin.css"
         >
 
     <?php elseif ($page === 'congrat'): ?>
@@ -114,7 +114,7 @@ try {
     <?php elseif ($page === 'admin'): ?>
 
         <?php
-        require __DIR__ . '/admin/admin.html';
+        require __DIR__ . '/admin-page/admin.html';
         ?>
 
     <?php elseif ($page === 'congrat'): ?>
@@ -131,7 +131,7 @@ try {
 
     <?php elseif ($page === 'admin'): ?>
 
-        <script src="/admin/admin.js"></script>
+        <script src="/admin-page/admin.js"></script>
 
     <?php elseif ($page === 'congrat'): ?>
 
