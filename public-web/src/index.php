@@ -1,4 +1,32 @@
 <?php
+$path = parse_url(
+    $_SERVER['REQUEST_URI'],
+    PHP_URL_PATH
+);
+
+$path = rtrim($path, '/');
+
+if ($path === '') {
+    $path = '/';
+}
+
+if ($path === '/') {
+
+    $page = 'login';
+
+} elseif ($path === '/admin') {
+
+    $page = 'admin';
+
+} elseif ($path === '/congrat') {
+
+    $page = 'congrat';
+
+} else {
+
+    http_response_code(404);
+    $page = 'not-found';
+}
 
 $dbHost = getenv('DB_HOST');
 $dbName = getenv('DB_NAME');
@@ -49,218 +77,69 @@ try {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Public Web Login</title>
+<title>인프라보안 11기 야호</title>
+<?php if ($page === 'login'): ?>
 
-<style>
-* {
-    box-sizing: border-box;
-}
+        <link
+            rel="stylesheet"
+            href="/login/login.css"
+        >
 
-body {
-    margin: 0;
-    min-height: 100vh;
-    background: #101010;
-    color: #eeeeee;
-    font-family: Arial, sans-serif;
+    <?php elseif ($page === 'admin'): ?>
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        <link
+            rel="stylesheet"
+            href="/admin/admin.css"
+        >
 
-.container {
-    width: 520px;
-}
+    <?php elseif ($page === 'congrat'): ?>
 
-.login-box {
-    padding: 35px;
-    background: #191919;
-    border: 1px solid #333;
-    border-radius: 10px;
-}
+        <link
+            rel="stylesheet"
+            href="/congrat/congrat.css"
+        >
 
-h1 {
-    text-align: center;
-    margin-top: 0;
-}
-
-.subtitle {
-    text-align: center;
-    color: #888;
-    margin-bottom: 30px;
-}
-
-label {
-    display: block;
-    margin-bottom: 7px;
-}
-
-input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-
-    background: #0e0e0e;
-    color: white;
-
-    border: 1px solid #444;
-    border-radius: 5px;
-}
-
-button {
-    width: 100%;
-    padding: 13px;
-
-    border: 0;
-    border-radius: 5px;
-
-    background: #eee;
-    color: #111;
-
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.result {
-    margin-top: 20px;
-    padding: 20px;
-
-    background: #191919;
-    border: 1px solid #333;
-    border-radius: 10px;
-}
-
-.error {
-    color: #ff7777;
-    white-space: pre-wrap;
-    word-break: break-all;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-td, th {
-    border: 1px solid #444;
-    padding: 8px;
-    text-align: left;
-}
-</style>
+    <?php endif; ?>
 
 </head>
 
 <body>
 
-<div class="container">
+    <?php if ($page === 'login'): ?>
 
-<div class="login-box">
+        <?php
+        require __DIR__ . '/login/login.html';
+        ?>
 
-    <h1>LOGIN</h1>
-    <div class="subtitle">Public Web Authentication</div>
+    <?php elseif ($page === 'admin'): ?>
 
-    <form method="POST">
+        <?php
+        require __DIR__ . '/admin/admin.html';
+        ?>
 
-        <label>ID</label>
+    <?php elseif ($page === 'congrat'): ?>
 
-        <input
-            type="text"
-            name="username"
-            autocomplete="off"
-            placeholder="ID"
-        >
+        <?php
+        require __DIR__ . '/congrat/congrat.html';
+        ?>
 
-        <label>Password</label>
+    <?php endif; ?>
 
-        <input
-            type="password"
-            name="password"
-            placeholder="Password"
-        >
+        <?php if ($page === 'login'): ?>
 
-        <button type="submit">
-            LOGIN
-        </button>
+        <script src="/login/login.js"></script>
 
-    </form>
+    <?php elseif ($page === 'admin'): ?>
 
-</div>
+        <script src="/admin/admin.js"></script>
 
+    <?php elseif ($page === 'congrat'): ?>
 
-<?php if ($error !== ''): ?>
+        <script
+            src="/congrat/congrat.js"
+        ></script>
 
-<div class="result">
-
-    <strong>Database Error</strong>
-
-    <div class="error">
-        <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
-    </div>
-
-</div>
-
-<?php endif; ?>
-
-
-<?php if ($loginError !== ''): ?>
-
-<div class="result">
-    <div class="error">
-        <?= htmlspecialchars($loginError, ENT_QUOTES, 'UTF-8') ?>
-    </div>
-</div>
-
-<?php endif; ?>
-
-
-<?php if (!empty($resultRows)): ?>
-
-<div class="result">
-
-<table>
-
-<thead>
-<tr>
-
-<?php foreach (array_keys($resultRows[0]) as $column): ?>
-
-    <th>
-        <?= htmlspecialchars($column, ENT_QUOTES, 'UTF-8') ?>
-    </th>
-
-<?php endforeach; ?>
-
-</tr>
-</thead>
-
-
-<tbody>
-
-<?php foreach ($resultRows as $row): ?>
-
-<tr>
-
-<?php foreach ($row as $value): ?>
-
-<td>
-    <?= htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8') ?>
-</td>
-
-<?php endforeach; ?>
-
-</tr>
-
-<?php endforeach; ?>
-
-</tbody>
-
-</table>
-
-</div>
-
-<?php endif; ?>
-
-</div>
+    <?php endif; ?>
 
 </body>
 </html>
