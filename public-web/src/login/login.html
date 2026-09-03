@@ -1,16 +1,32 @@
 <div class="container">
+  <div class="upper-line-container">
+    <div class="upper-line">
+      인프라보안 11기 파이탱!
+      <div class="x-box"></div>
+    </div>
+  </div>
   <div class="login-box">
-    <h1>LOGIN</h1>
-    <div class="subtitle">Public Web Authentication</div>
+    <h1>나를 넘어봐라.</h1>
 
     <form method="POST">
-      <label>ID</label>
+      <label for="public-id">ID</label>
 
-      <input type="text" name="username" autocomplete="off" placeholder="ID" />
+      <input
+        id="public-id"
+        type="text"
+        name="username"
+        autocomplete="off"
+        placeholder="ID"
+      />
 
-      <label>Password</label>
+      <label for="public-pw">Password</label>
 
-      <input type="password" name="password" placeholder="Password" />
+      <input
+        id="public-pw"
+        type="password"
+        name="password"
+        placeholder="Password"
+      />
 
       <button type="submit">LOGIN</button>
     </form>
