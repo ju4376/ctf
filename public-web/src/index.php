@@ -4,30 +4,6 @@ $path = parse_url(
     PHP_URL_PATH
 );
 
-$path = rtrim($path, '/');
-
-if ($path === '') {
-    $path = '/';
-}
-
-if ($path === '/') {
-
-    $page = 'login';
-
-} elseif ($path === '/admin') {
-
-    $page = 'admin';
-
-} elseif ($path === '/congrat') {
-
-    $page = 'congrat';
-
-} else {
-
-    http_response_code(404);
-    $page = 'not-found';
-}
-
 $dbHost = getenv('DB_HOST');
 $dbName = getenv('DB_NAME');
 $dbUser = getenv('DB_USER');
@@ -78,66 +54,20 @@ try {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>인프라보안 11기 야호</title>
-<?php if ($page === 'login'): ?>
         <link
             rel="stylesheet"
             href="/login/login.css"
-        >
-
-    <?php elseif ($page === 'admin'): ?>
-
-        <link
-            rel="stylesheet"
-            href="/admin-page/admin.css"
-        >
-
-    <?php elseif ($page === 'congrat'): ?>
-
-        <link
-            rel="stylesheet"
-            href="/congrat/congrat.css"
-        >
-
-    <?php endif; ?>
+/>
 
 </head>
 
 <body>
 
-    <?php if ($page === 'login'): ?>
-
         <?php
         require __DIR__ . '/login/login.html';
         ?>
 
-<?php elseif ($page === 'admin'): ?>
-        <?php
-        require __DIR__ . '/admin-page/admin.html';
-        ?>
-
-    <?php elseif ($page === 'congrat'): ?>
-
-        <?php
-        require __DIR__ . '/congrat/congrat.html';
-        ?>
-
-    <?php endif; ?>
-
-        <?php if ($page === 'login'): ?>
-
         <script src="/login/login.js"></script>
-
-    <?php elseif ($page === 'admin'): ?>
-
-        <script src="/admin-page/admin.js"></script>
-
-    <?php elseif ($page === 'congrat'): ?>
-
-        <script
-            src="/congrat/congrat.js"
-        ></script>
-
-    <?php endif; ?>
 
 </body>
 </html>
