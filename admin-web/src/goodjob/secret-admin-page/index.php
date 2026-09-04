@@ -64,12 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>관리자 로그인</title>
-    <link rel="stylesheet" href="./admin.css">
+    <link rel="stylesheet" href="./admin-page/admin.css">
 </head>
 
 <body>
             <?php
-        require __DIR__ . '/../../admin-page/admin.html';;
+        require __DIR__ . '/admin-page/admin.html';;
         ?>
 
 </body>

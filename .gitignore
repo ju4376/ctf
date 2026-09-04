@@ -14,3 +14,4 @@ vulnerable-web-lab/.env
 *.tmp
 
 .DS_Store
+.env
