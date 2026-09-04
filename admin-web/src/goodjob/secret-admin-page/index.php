@@ -64,93 +64,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>관리자 로그인</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 520px;
-            margin: 80px auto;
-            padding: 20px;
-        }
-
-        input {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 10px;
-            margin: 8px 0 16px;
-        }
-
-        button {
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-
-        .error {
-            color: #b00020;
-        }
-
-        .info {
-            margin-top: 35px;
-            font-size: 14px;
-        }
-    </style>
+    <link rel="stylesheet" href="/admin-page/admin.css"/>
 </head>
 
 <body>
-
-<h1>관리자 페이지</h1>
-
-<p>관리자 로그인</p>
-
-<?php if ($error !== ''): ?>
-
-    <p class="error">
-        <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
-    </p>
-
-<?php endif; ?>
-
-<form method="POST">
-
-    <label for="username">Username</label>
-
-    <input
-        type="text"
-        id="username"
-        name="username"
-        autocomplete="username"
-        required
-    >
-
-    <label for="password">Password</label>
-
-    <input
-        type="password"
-        id="password"
-        name="password"
-        autocomplete="current-password"
-        required
-    >
-
-    <button type="submit">
-        Login
-    </button>
-
-</form>
-
-<!-- TODO: disable diagnostics link before production
-<a href="/goodjob/secret-admin-page/system.php">
-    System Information
-</a>
--->
-
-<!--
-<div class="hidden">
-    <a href="/goodjob/secret-admin-page/system.php">
-        System Information
-    </a>
-</div>
--->
+            <?php
+        require __DIR__ . '/../../admin-page/admin.html';;
+        ?>
 
 </body>
 </html>

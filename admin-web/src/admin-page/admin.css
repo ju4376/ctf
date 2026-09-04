@@ -1,0 +1,89 @@
+@font-face {
+  font-family: "neo";
+  src: url("./neodgm.ttf");
+}
+
+body {
+  background-color: #008080;
+  position: absolute;
+  font-family: "neo";
+  max-width: 520px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+}
+
+h1,
+p {
+  color: white;
+}
+
+form {
+  width: 80%;
+  background-color: #e3ded2;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+
+  box-shadow:
+    -7px 7px 0 #ff3366,
+    7px 14px 0 #244cff,
+    13px 21px 0 #00d7a3;
+
+  gap: 0.5rem;
+}
+
+label {
+  color: black;
+
+  &:nth-child(3) {
+    margin-block-start: 1rem;
+  }
+}
+
+input {
+  font: inherit;
+  box-sizing: border-box;
+  padding-block: 1rem;
+
+  border: 0;
+  background-color: #008080;
+
+  box-shadow: #234e70 4px 4px 0;
+
+  color: white;
+  padding-inline: 0.5rem;
+}
+
+button {
+  font: inherit;
+  margin-block-start: 3rem;
+  padding-inline: 0.75rem;
+  padding-block: 1rem;
+  cursor: pointer;
+  border: 0;
+
+  background-color: #11111b;
+  box-shadow:
+    white 1px 1px 4px,
+    black 4px 4px 2px;
+
+  color: white;
+}
+
+button:active {
+  background-color: #150df7;
+  box-shadow:
+    inset -4px -4px 2px #000,
+    inset 4px 4px 2px #fff;
+}
+
+.error {
+  color: #b00020;
+}
+
+.info {
+  margin-top: 35px;
+  font-size: 14px;
+}
