@@ -1,7 +1,7 @@
 USE admin_auth;
 
 -- =========================================================
--- Administrator Authentication Table
+-- 테이블 분리 
 -- =========================================================
 
 CREATE TABLE admin_users (
@@ -15,15 +15,27 @@ CREATE TABLE admin_users (
     UNIQUE KEY uq_admin_username (username)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE board_posts (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    visitor_id CHAR(36) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL
+        DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
 
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_board_posts_visitor_id (visitor_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- =========================================================
--- Challenge Administrator Account
+-- 어드민 계정
 --
 -- Username:
--- web-sec-07-admin
+-- the-end-and-the-beginning-admin
 --
 -- Password:
--- debian12-apache24
+-- goodluck
 --
 -- 실제 비밀번호는 DB에 저장하지 않고
 -- PHP password_hash() 결과만 저장한다.
@@ -42,14 +54,18 @@ VALUES (
 
 
 -- =========================================================
--- Admin Application DB Account Privileges
+-- 계정 권한
 -- =========================================================
 
 REVOKE ALL PRIVILEGES, GRANT OPTION
 FROM 'admin_app_user'@'%';
 
 GRANT SELECT
-ON admin_auth.*
+ON admin_auth.admin_users
+TO 'admin_app_user'@'%';
+
+GRANT SELECT, INSERT, UPDATE
+ON admin_auth.board_posts
 TO 'admin_app_user'@'%';
 
 FLUSH PRIVILEGES;

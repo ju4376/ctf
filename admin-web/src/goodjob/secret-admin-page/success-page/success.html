@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Challenge Completed</title>
+</head>
+
+<body>
+
+<h1>수고많으셨습니다!</h1>
+
+<p>
+수료를 진심으로 축하드립니다!!
+</p>
+
+<p>
+<strong>
+11기 이스트캠프 인프라보안 가디언즈
+</strong>
+</p>
+
+<div>
+    FLAG{The_End_and_the_Beginning}
+</div>
+
+
+<h2>게시판</h2>
+
+
+<?php if ($boardMessage !== ''): ?>
+
+<p>
+    <?= h($boardMessage) ?>
+</p>
+
+<?php endif; ?>
+
+
+<?php if ($boardError !== ''): ?>
+
+<p>
+    <?= h($boardError) ?>
+</p>
+
+<?php endif; ?>
+
+
+<form
+    method="POST"
+    action="/goodjob/secret-admin-page/success.php"
+>
+
+<input
+    type="hidden"
+    name="csrf_token"
+    value="<?= h($csrfToken) ?>"
+>
+
+
+<label>
+이름
+</label>
+
+<input
+    type="text"
+    name="name"
+    maxlength="100"
+    required
+    value="<?= h($myPost['name'] ?? '') ?>"
+>
+
+
+<label>
+내용
+</label>
+
+<textarea
+    name="content"
+    required
+><?= h($myPost['content'] ?? '') ?></textarea>
+
+
+<button type="submit">
+
+<?php if ($myPost === null): ?>
+
+작성
+
+<?php else: ?>
+
+수정
+
+<?php endif; ?>
+
+</button>
+
+</form>
+
+
+<hr>
+
+
+<h2>작성된 글</h2>
+
+
+<?php foreach ($posts as $index => $post): ?>
+
+<article>
+
+    <strong>
+        #<?= $index + 1 ?>
+    </strong>
+
+    <strong>
+        <?= h($post['name']) ?>
+    </strong>
+
+    <p>
+        <?= nl2br(h($post['content'])) ?>
+    </p>
+
+    <small>
+        <?= h($post['created_at']) ?>
+    </small>
+
+</article>
+
+<?php endforeach; ?>
+
+
+<p>
+<a href="/goodjob/secret-admin-page/logout.php">
+Logout
+</a>
+</p>
+
+</body>
+</html>
